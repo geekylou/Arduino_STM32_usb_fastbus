@@ -55,7 +55,8 @@
 
 class WireBase { // Abstraction is awesome!
 protected:
-    i2c_msg itc_msg;
+    i2c_msg itc_msg[2];
+    uint8_t itc_msgs = 1;
     uint8 rx_buf[WIRE_BUFSIZ];      /* receive buffer */
     uint8 rx_buf_idx;               /* first unread idx in rx_buf */
     uint8 rx_buf_len;               /* number of bytes read */
@@ -65,7 +66,7 @@ protected:
     boolean tx_buf_overflow;
 
     // Force derived classes to define process function
-    virtual uint8 process() = 0;
+    virtual uint8 process(bool sendStop) = 0;
 public:
     WireBase() {}
     ~WireBase() {}
@@ -93,11 +94,19 @@ public:
     uint8 endTransmission(void);
 
     /*
+     * Call the process function to process the message if the TX
+     * buffer has not overflowed.
+     */
+    uint8 endTransmission(bool sendStop);
+    
+    /*
      * Request bytes from a slave device and process the request,
      * storing into the receiving buffer.
      */
     uint8 requestFrom(uint8, int);
 
+    uint8 requestFromRegister(uint8, uint8, int);
+    
     /*
      * Allow only 8 bit addresses to be used when requesting bytes
      */

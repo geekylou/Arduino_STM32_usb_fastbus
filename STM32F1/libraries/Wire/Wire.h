@@ -47,8 +47,8 @@
  * On the Maple, let the default pins be in the same location as the Arduino
  * pins
  */
-#define SDA PB7
-#define SCL PB6
+#define SDA 19
+#define SCL 20
 
 #define SOFT_STANDARD 27
 #define SOFT_FAST 0
@@ -87,6 +87,7 @@ class TwoWire : public WireBase {
      */
     void  i2c_stop();
 
+    void i2c_repeated_start();
     /*
      * Gets an ACK condition from a slave device on the bus
      */
@@ -119,7 +120,7 @@ class TwoWire : public WireBase {
     /*
      * Processes the incoming I2C message defined by WireBase
      */
-    uint8 process();
+    uint8 process(bool sendStop);
  public:
     /*
      * Accept pin numbers for SCL and SDA lines. Set the delay needed
