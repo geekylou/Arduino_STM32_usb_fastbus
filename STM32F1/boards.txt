@@ -12,7 +12,7 @@ mapleMini.build.board=MAPLE_MINI
 mapleMini.vid.0=0x1EAF
 mapleMini.pid.0=0x0004
 mapleMini.build.core=maple
-mapleMini.build.cpu_flags=-DMCU_STM32F103CB -DSERIAL_USB
+mapleMini.build.cpu_flags=-DMCU_STM32F103CB -DSERIAL_USB -DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1
 mapleMini.build.variant=maple_mini
 mapleMini.upload.usbID=1EAF:0003
 

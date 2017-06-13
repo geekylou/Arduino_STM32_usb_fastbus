@@ -49,6 +49,7 @@ extern "C" {
 #define USB_DESCRIPTOR_TYPE_STRING        0x03
 #define USB_DESCRIPTOR_TYPE_INTERFACE     0x04
 #define USB_DESCRIPTOR_TYPE_ENDPOINT      0x05
+#define USB_DESCRIPTOR_TYPE_INTERFACE_ASSOCIATION 11
 
 /* Descriptor structs and declaration helpers */
 
@@ -101,6 +102,17 @@ typedef struct usb_descriptor_interface {
     uint8 iInterface;
 } __packed usb_descriptor_interface;
 
+typedef struct usb_descriptor_interface_association {
+    uint8 bLength;
+    uint8 bDescriptorType;
+    uint8 bFirstInterface;
+    uint8 bInterfaceCount;
+    uint8 bFunctionClass;
+    uint8 bFunctionSubClass;
+    uint8 bFunctionProtocol;
+    uint8 iFunction;
+} __packed usb_descriptor_interface_association;
+
 typedef struct usb_descriptor_endpoint {
     uint8  bLength;
     uint8  bDescriptorType;
@@ -150,7 +162,7 @@ typedef struct usblib_dev {
     uint32 irq_mask;
     void (**ep_int_in)(void);
     void (**ep_int_out)(void);
-    usb_dev_state state;
+    volatile usb_dev_state state;
     usb_dev_state prevState;
     rcc_clk_id clk_id;
 } usblib_dev;
@@ -161,11 +173,11 @@ void usb_init_usblib(usblib_dev *dev,
                      void (**ep_int_in)(void),
                      void (**ep_int_out)(void));
 
-static inline uint8 usb_is_connected(usblib_dev *dev) {
+static inline uint8 usb_is_connected(volatile usblib_dev *dev) {
     return dev->state != USB_UNCONNECTED;
 }
 
-static inline uint8 usb_is_configured(usblib_dev *dev) {
+static inline uint8 usb_is_configured(volatile usblib_dev *dev) {
     return dev->state == USB_CONFIGURED;
 }
 

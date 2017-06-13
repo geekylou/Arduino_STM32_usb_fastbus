@@ -39,6 +39,12 @@
 #include <libmaple/usb.h>
 
 #ifdef __cplusplus
+extern "C"
+{
+  void fastDataRxCb(uint32 ep_rx_size, uint8 *ep_rx_data);
+  int sendFastTxCallback(uint8_t *buffer,uint8_t size);
+  void checkFastCallback();
+}
 extern "C" {
 #endif
 
@@ -93,15 +99,27 @@ extern "C" {
 #define USB_CDCACM_RX_ADDR              0x110
 #define USB_CDCACM_RX_EPSIZE            0x40
 
+#define USB_FAST_ENDP              4
+#define USB_FAST_ADDR              0x150
+#define USB_FAST_EPSIZE            0x40
+
+#define USB_FAST_TX_ENDP              5
+#define USB_FAST_TX_ADDR              0x1A0
+#define USB_FAST_TX_EPSIZE            0x22
+
 #ifndef __cplusplus
+
+// USB_DEVICE_CLASS_CDC,                       \
+USB_DEVICE_SUBCLASS_CDC,                    \
+
 #define USB_CDCACM_DECLARE_DEV_DESC(vid, pid)                           \
   {                                                                     \
       .bLength            = sizeof(usb_descriptor_device),              \
       .bDescriptorType    = USB_DESCRIPTOR_TYPE_DEVICE,                 \
       .bcdUSB             = 0x0200,                                     \
-      .bDeviceClass       = USB_DEVICE_CLASS_CDC,                       \
-      .bDeviceSubClass    = USB_DEVICE_SUBCLASS_CDC,                    \
-      .bDeviceProtocol    = 0x00,                                       \
+      .bDeviceClass       = 239,\
+      .bDeviceSubClass    = 2,\
+      .bDeviceProtocol    = 0x01,                                       \
       .bMaxPacketSize0    = 0x40,                                       \
       .idVendor           = vid,                                        \
       .idProduct          = pid,                                        \
@@ -169,7 +187,7 @@ int usb_cdcacm_get_n_data_bits(void); /* bDataBits */
 
 void usb_cdcacm_set_hooks(unsigned hook_flags, void (*hook)(unsigned, void*));
 
-static inline __always_inline void usb_cdcacm_remove_hooks(unsigned hook_flags) {
+static __always_inline void usb_cdcacm_remove_hooks(unsigned hook_flags) {
     usb_cdcacm_set_hooks(hook_flags, 0);
 }
 
