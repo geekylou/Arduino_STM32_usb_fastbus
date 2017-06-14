@@ -749,7 +749,7 @@ static void fastDataRxCb_int()
             ready_for_data = 1;
             
             //if (count < 1)
-            //    usb_set_ep_rx_stat(USB_FAST_ENDP, USB_EP_STAT_RX_VALID);
+                usb_set_ep_rx_stat(USB_FAST_ENDP, USB_EP_STAT_RX_VALID);
         }
 }
 
