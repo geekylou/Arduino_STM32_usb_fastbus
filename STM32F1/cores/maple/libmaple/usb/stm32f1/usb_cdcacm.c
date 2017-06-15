@@ -702,18 +702,10 @@ void checkFastCallback()
     //noInterrupt();
     if (ready_for_data)
     {   
-        int count;
         ready_for_data=0;
-        for (count=0; count < 1; count++)
-        {   
-            //if (ep_rx_size[count] != 0xff)
-            {
-                fastDataRxCb(ep_rx_size[count], ep_rx_data[count]);
-                //ep_rx_size[count] = 0xff;
-                usb_set_ep_rx_stat(USB_FAST_ENDP, USB_EP_STAT_RX_VALID);
-            }   
-        }
-        
+
+        fastDataRxCb(ep_rx_size[0], ep_rx_data[0]);
+        usb_set_ep_rx_stat(USB_FAST_ENDP, USB_EP_STAT_RX_VALID);
     }
     //interrupt();
 }
@@ -739,18 +731,10 @@ static void fastDataTxCb_int()
 
 static void fastDataRxCb_int()
 {
-    int count;
-    //for (count=0; count < 4; count++)
-        //if (ep_rx_size[count] == 0xff)
-        {
-            ep_rx_size[count] = usb_get_ep_rx_count(USB_FAST_ENDP);
-            usb_copy_from_pma((uint8*)&ep_rx_data[count], ep_rx_size[count],
-                      USB_FAST_ADDR);
-            ready_for_data = 1;
-            
-            //if (count < 1)
-                usb_set_ep_rx_stat(USB_FAST_ENDP, USB_EP_STAT_RX_VALID);
-        }
+    ep_rx_size[0] = usb_get_ep_rx_count(USB_FAST_ENDP);
+    usb_copy_from_pma((uint8*)&ep_rx_data[0], ep_rx_size[0],
+              USB_FAST_ADDR);
+    ready_for_data = 1;
 }
 
 static uint8* vcomGetSetLineCoding(uint16 length) {
