@@ -296,10 +296,10 @@ static const usb_descriptor_string usbVcomDescriptor_iProduct = {
 };
 
 /* FIXME move to Wirish */
-static const usb_descriptor_string usbVcomDescriptor_iProductTFT = {
+static const usb_descriptor_string usbVcomDescriptor_iProductFast = {
     .bLength = USB_DESCRIPTOR_STRING_LEN(7),
     .bDescriptorType = USB_DESCRIPTOR_TYPE_STRING,
-    .bString = {'T', 0, 'F', 0, 'T', 0, 'D', 0, 'I', 0,'S', 0,'P', 0},
+    .bString = {'F', 0, 'a', 0, 's', 0, 't', 0, 'B', 0,'u', 0,'s', 0},
 };
 
 static ONE_DESCRIPTOR Device_Descriptor = {
@@ -317,7 +317,7 @@ static ONE_DESCRIPTOR String_Descriptor[N_STRING_DESCRIPTORS] = {
     {(uint8*)&usbVcomDescriptor_LangID,       USB_DESCRIPTOR_STRING_LEN(1)},
     {(uint8*)&usbVcomDescriptor_iManufacturer,USB_DESCRIPTOR_STRING_LEN(8)},
     {(uint8*)&usbVcomDescriptor_iProduct,     USB_DESCRIPTOR_STRING_LEN(5)},
-    {(uint8*)&usbVcomDescriptor_iProductTFT,     USB_DESCRIPTOR_STRING_LEN(7)}
+    {(uint8*)&usbVcomDescriptor_iProductFast,     USB_DESCRIPTOR_STRING_LEN(7)}
 };
 
 /*
