@@ -705,9 +705,15 @@ void checkFastCallback()
         ready_for_data=0;
 
         fastDataRxCb(ep_rx_size[0], ep_rx_data[0]);
-        usb_set_ep_rx_stat(USB_FAST_ENDP, USB_EP_STAT_RX_VALID);
     }
+    usb_set_ep_rx_stat(USB_FAST_ENDP, USB_EP_STAT_RX_VALID); /* It doesn't matter if we set this to valid even if we don't have any data! */
     //interrupt();
+}
+
+/* If we timeout we need a method of resetting the interface so we don't lock up! */
+void resetFastTxCallback()
+{
+    fast_irq_empty = 1;
 }
 
 int sendFastTxCallback(uint8_t *buffer,uint8_t size)

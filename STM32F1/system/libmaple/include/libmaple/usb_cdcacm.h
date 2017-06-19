@@ -44,6 +44,7 @@ extern "C"
   void fastDataRxCb(uint32 ep_rx_size, uint8 *ep_rx_data);
   int sendFastTxCallback(uint8_t *buffer,uint8_t size);
   void checkFastCallback();
+  void resetFastTxCallback();
 }
 extern "C" {
 #endif
